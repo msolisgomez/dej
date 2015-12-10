@@ -1,0 +1,28 @@
+create database abc;
+use abc;
+
+
+//ex2
+
+create table cliente(
+id int auto_increment primary key,
+nombre varchar(100));
+
+create table producto(
+id int auto_increment primary key,
+nombre varchar(100),
+precio int,
+baja bit);
+
+
+insert into cliente
+(nombre)
+values('michael');
+
+insert into cliente
+(nombre)
+values('flor');
+
+insert into cliente
+(nombre)
+values('manuel');
