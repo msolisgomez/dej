@@ -195,6 +195,35 @@ public class ProductoDAOImpl implements ProductoDAO{
     }
     return null;
     }
+
+    @Override
+    public Producto getProductoById(int id_producto) {
+       Producto datos = null;
+       
+        try {
+            ps = con.prepareStatement("select id_producto, descripcion,valor from producto where id_producto = "+id_producto);
+            rs = ps.executeQuery();
+ 
+                    
+            while (rs.next()) {
+                datos = new Producto(rs.getInt(1), rs.getString(2).toUpperCase(), rs.getInt(3));
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
+        } finally {
+            if (con != null) {
+                Conexion.cerrarCon();
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        return datos;  
+    }
     
         
     }

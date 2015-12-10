@@ -13,12 +13,14 @@ import dao.ProductoDAO;
 import dao.ProductoDAOImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -31,34 +33,37 @@ public class Controlador extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         String seleccion = request.getParameter("seleccion");
+         String seleccion = request.getParameter("pressedButton");
          ClienteDAO cdao = ClienteDAOImpl.getCdao();
          ProductoDAO pdao=ProductoDAOImpl.getPdao();
-         if (seleccion.equals("1")) {
-         response.sendRedirect("pedidosTicket.jsp");
-                    
-                   
-        }
-          if (seleccion.equals("2")) {
-        
-         Integer rut=Integer.parseInt(request.getParameter("rut")); 
-         String nombre=request.getParameter("nombre");
-        
-         
-         Integer valor = cdao.clienteIngresa(new Cliente(rut,nombre));
-         request.setAttribute("valor", valor);
-         request.getRequestDispatcher("regCli.jsp").forward(request,response);
-         
-                  
-                  
-        }
+         if (seleccion.equals("iniciarPagina")) {
+          List<Producto> productos = pdao.productoTodos();
           
-           if (seleccion.equals("3")) {
+          request.setAttribute("productos", productos);
+          request.getRequestDispatcher("index.jsp").forward(request,response);    
+         //response.sendRedirect("index.jsp").f;        
+        }else if (seleccion.equals("agregar")) {
+            int id_producto = Integer.parseInt(request.getParameter("sele"));
+            Producto prod = pdao.getProductoById(id_producto);
+            HttpSession session = request.getSession();
+            List<Producto> sessionProductos = (List<Producto>)session.getAttribute("sessionProductos");
+            if(sessionProductos==null){
+                sessionProductos=new ArrayList<Producto>();
+            }
+            sessionProductos.add(prod);
+            session.setAttribute("sessionProductos", sessionProductos);
+         request.getRequestDispatcher("Controlador?pressedButton=iniciarPagina").forward(request,response);
+         
+                  
+                  
+        }else if (seleccion.equals("ENVIAR PEDIDO")) {
+        String agranda_bebida_papas = request.getParameter("agranda_bebida_papas");
+        Cliente cliente = grabarCliente(request);
+       
          response.sendRedirect("pagina3.jsp");
                     
                    
-        }
-           if (seleccion.equals("4")){
+        } else if (seleccion.equals("4")){
           
             Integer id = Integer.parseInt(request.getParameter("id"));
             Integer valor=0;
@@ -69,16 +74,13 @@ public class Controlador extends HttpServlet {
             request.getRequestDispatcher("pagina3.jsp").forward(request,response);
                           
                         
-              }   
-           
-            if (seleccion.equals("5")) {
+              } else if (seleccion.equals("5")) {
           List<Cliente> datos = cdao.clienteTodos();
           request.setAttribute("datos", datos);
              request.getRequestDispatcher("pagina5.jsp").forward(request, response);
                     
                    
-        }
-           if (seleccion.equals("6")) {
+        }else if (seleccion.equals("6")) {
          response.sendRedirect("pagina6.jsp");
                     
                    
@@ -117,20 +119,20 @@ public class Controlador extends HttpServlet {
        // }
             
 //            }
-            if (seleccion.equals("8")) {
+        else  if (seleccion.equals("8")) {
           List<Producto> datos = pdao.productoTodos();
           request.setAttribute("datos", datos);
              request.getRequestDispatcher("pagina2.jsp").forward(request, response);
                     
                    
         }
-               if (seleccion.equals("9")) {
+             else  if (seleccion.equals("9")) {
          response.sendRedirect("pagina4.jsp");
                     
                    
         }
      
-                if (seleccion.equals("10")) {
+               else if (seleccion.equals("10")) {
          response.sendRedirect("pagina7.jsp");
                     
                    
@@ -199,5 +201,18 @@ public class Controlador extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-
+    
+    private Cliente grabarCliente(HttpServletRequest request) throws ServletException, IOException{
+        ClienteDAO cdao = ClienteDAOImpl.getCdao();
+        Integer rut=Integer.parseInt(request.getParameter("rut")); 
+        String nombre=request.getParameter("nombre");
+        Cliente cliente = new Cliente(rut,nombre);
+        Integer valor = cdao.clienteIngresa(cliente);
+        request.setAttribute("valor", valor);
+        //request.getRequestDispatcher("regCli.jsp").forward(request,response);
+        if(valor==0){
+            cliente=null;
+        }
+        return cliente;
+    }
 }

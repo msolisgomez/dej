@@ -21,10 +21,7 @@
             List<Producto> datos = (List<Producto>)
                     request.getAttribute("datos");
                     pageContext.setAttribute("datos",datos);
-                    
-                    
-            
-        %>
+         %>
          
   
  <c:forEach var="obj" items="${datos}">
