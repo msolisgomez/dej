@@ -30,8 +30,8 @@
             <center>
                 <table border="4">
                     <tr>
-                        <td style="text-align:right">Nombre: <input type="text" name="nombre" value="" /></td> <br/>
-                    <td style="text-align:right">Rut:    <input type="text" name="rut"  value="" /></td> <br/><br/><br/><br/>
+                        <td style="text-align:right">Nombre: <input type="text" name="nombre" value="<c:out value="${nombre}"/>"  /></td> <br/>
+                    <td style="text-align:right">Rut:    <input type="text" name="rut"  value= "<c:out value="${rut}"/>" <br/><br/><br/><br/>
                     </tr>
                 </table>
                 <hr color="blue"/>
@@ -42,14 +42,14 @@
 
             <select NAME="sele">
                 <c:forEach var="item" items="${productos}">
-                    <option value="<c:out value="${item.id_producto}" />" > <c:out value="${item.descripcion}" /> </option>
+                    <option value="<c:out value="${item.id_producto}" />" > <c:out value="${item.descripcion}" /> X $<c:out value="${item.valor}" /> </option>
                 </c:forEach>
             </select>
 
             <input type="submit" value="agregar" name="pressedButton" />
-        </center>
+       
 
-    </center>
+   
     <hr color="blue"/>
 
 
@@ -57,66 +57,49 @@
     <input type="checkbox" name="agranda_bebida_papas" value="ON" />Agranda bebida y papas<br/>
     <input type="checkbox" name="para_llevar" value="ON" />         Para llevar<br/> <br/>
     <b>Medio de pago:</b><br/>
-    Efectivo:<input type="radio" name="medio_pago" value="" /><br/>
-    Tarjeta credito:<input type="radio" name="medio_pago" value="" /><br/><br/>
-    <input type="hidden" name="seleccion" value="1" />
+    Efectivo:<input type="radio" name="medio_pago" value="efectivo" checked="true" /><br/>
+    Tarjeta credito:<input type="radio" name="medio_pago" value="tcredito" /><br/><br/>
+    
     <input type="submit" name="pressedButton" value="ENVIAR PEDIDO" />
 
-    <sql:setDataSource var="tab" driver="com.mysql.jdbc.Driver"
-                       url="jdbc:mysql://localhost/et_dej4501"
-                       user="root"  password="root"/>
-    <sql:query dataSource="${tab}" var="result">
-        SELECT * from producto;
-    </sql:query>
+   
 
      <table border="1" width="40%" align="center" >
 
         <tr>
 
-            <th>id_producto</th>
-            <th>descripcion</th>
-            <th>valor</th>
+           
+            <th>Cantidad</th>
+            <th>Descripcion</th>
+            <th>Total</th>
 
         </tr>
         <c:out value="${sessionScope.Questions.questionPaperID}" />
-        <c:forEach var="prod" items="${sessionScope.sessionProductos}">
+        <c:forEach var="det" items="${sessionScope.sessionPedidoDet}">
 
             <tr>
-
-                <td><c:out value="${prod.id_producto}"/></td>
-                <td><c:out value="${prod.descripcion}"/></td>
-                <td><c:out value="${prod.valor}"/></td>
+                <td><c:out value="${det.cantidad}"/></td>
+                <td><c:out value="${det.producto.descripcion}"/></td>
+                <td><c:out value="${det.total}"/></td>
 
             </tr>
 
         </c:forEach>
+            
+            
     </table>
 
-        
-        
-        
-        <table border="1" width="40%" align="center" >
+      
 
-        <tr>
+<h1><b>total pedido:<c:out value="${total}"/></b></h1> 
 
-            <th>id_producto</th>
-            <th>descripcion</th>
-            <th>valor</th>
 
-        </tr>
 
-        <c:forEach var="row" items="${result.rows}">
 
-            <tr>
 
-                <td><c:out value="${row.id_producto}"/></td>
-                <td><c:out value="${row.descripcion}"/></td>
-                <td><c:out value="${row.valor}"/></td>
 
-            </tr>
 
-        </c:forEach>
-    </table>
+     
         
         
 

@@ -6,7 +6,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%ResultSet resultset =null;%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,100 +16,93 @@
     <hr color="blue"/>
     <body>
         <p align="right"><a href="index.jsp" > Ayuda </a></p>
-           <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
-                
-               <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
-         
-              <center>    
-         Bienvenido a john master indiquenos su rut y nombre para generar su pedido <br/><br/>
-               </center>
-         <hr color="blue"/>
-        <a href="index.jsp"> home </a> <br/>
-        <a href="regCli.jsp"> Registro de cliente </a> <br/>
-        <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
-         <center>
-         <table border="4">
-            <tr>
-               <td style="text-align:right">Nombre: <input type="text" name="nombre" value="" /></td> <br/>
-               <td style="text-align:right">Rut:    <input type="text" name="rut"  value="" /></td> <br/><br/><br/><br/>
-           </tr>
-        </table>
-             <hr color="blue"/>
-             </center>
-         <center>
-         Seleccione un producto o combo,indique su cantidad y agregue el pedido :<br/><br/>
-        
-      <%
-    try{
-Class.forName("com.mysql.jdbc.Driver").newInstance();
-Connection connection = 
-         DriverManager.getConnection
-            ("jdbc:mysql://localhost/et_dej4501?user=root&password=root");
+        <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
 
-       Statement statement = connection.createStatement() ;
+            <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
 
-       resultset =statement.executeQuery("select * from producto") ;
-%>
-<center>
-    <select name="sele">
-        <%  while(resultset.next()){ %>
-            <option><%= resultset.getString(2)%></option> 
-        <% } %>
-        <input type="submit" value="agregar" name="agregar" />
-    </select>
+            <center>    
+                Bienvenido a john master indiquenos su rut y nombre para generar su pedido <br/><br/>
+            </center>
+            <hr color="blue"/>
+            <a href="index.jsp"> home </a> <br/>
+            <a href="regCli.jsp"> Registro de cliente </a> <br/>
+            <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
+            <center>
+                <table border="4">
+                    <tr>
+                        <td style="text-align:right">Nombre: <input type="text" name="nombre" value="<c:out value="${nombre}"/>"  /></td> <br/>
+                    <td style="text-align:right">Rut:    <input type="text" name="rut"  value= "<c:out value="${rut}"/>" <br/><br/><br/><br/>
+                    </tr>
+                </table>
+                <hr color="blue"/>
+            </center>
+            <center>
+                Seleccione un producto o combo,indique su cantidad y agregue el pedido :<br/><br/>
+            </center>
+
+            <select NAME="sele">
+                <c:forEach var="item" items="${productos}">
+                    <option value="<c:out value="${item.id_producto}" />" > <c:out value="${item.descripcion}" /> X $<c:out value="${item.valor}" /> </option>
+                </c:forEach>
+            </select>
+
+            <input type="submit" value="agregar" name="pressedButton" />
+       
+
+   
+    <hr color="blue"/>
+
+
+    <hr color="blue"/>
+    <input type="checkbox" name="agranda_bebida_papas" value="ON" />Agranda bebida y papas<br/>
+    <input type="checkbox" name="para_llevar" value="ON" />         Para llevar<br/> <br/>
+    <b>Medio de pago:</b><br/>
+    Efectivo:<input type="radio" name="medio_pago" value="efectivo" checked="true" /><br/>
+    Tarjeta credito:<input type="radio" name="medio_pago" value="tcredito" /><br/><br/>
     
-</center>
-    <%
+    <input type="submit" name="pressedButton" value="ENVIAR PEDIDO" />
 
-        }
-        catch(Exception e)
-        {
-             out.println("error capturado en catch"+e);
-        }
-%>
-         </center>
-         <hr color="blue"/>
-        
-       
-        <hr color="blue"/>
-        <input type="checkbox" name="agranda_bebida_papas" value="ON" />Agranda bebida y papas<br/>
-        <input type="checkbox" name="para_llevar" value="ON" />         Para llevar<br/> <br/>
-        <b>Medio de pago:</b><br/>
-        Efectivo:<input type="radio" name="medio_pago" value="" /><br/>
-        Tarjeta credito:<input type="radio" name="medio_pago" value="" /><br/><br/>
-        <input type="hidden" name="seleccion" value="1" />
-        <input type="submit" value="ENVIAR PEDIDO" />
-        
-        <sql:setDataSource var="tab" driver="com.mysql.jdbc.Driver"
-     url="jdbc:mysql://localhost/et_dej4501"
-     user="root"  password="root"/>
-        <sql:query dataSource="${tab}" var="result">
-        SELECT * from producto;
-        </sql:query>
-        
-        <table border="1" width="40%" align="center" >
+   
+
+     <table border="1" width="40%" align="center" >
+
+        <tr>
+
            
-<tr>
+            <th>Cantidad</th>
+            <th>Descripcion</th>
+            <th>Total</th>
+
+        </tr>
+        <c:out value="${sessionScope.Questions.questionPaperID}" />
+        <c:forEach var="det" items="${sessionScope.sessionPedidoDet}">
+
+            <tr>
+                <td><c:out value="${det.cantidad}"/></td>
+                <td><c:out value="${det.producto.descripcion}"/></td>
+                <td><c:out value="${det.total}"/></td>
+
+            </tr>
+
+        </c:forEach>
+            
+            
+    </table>
+
+      
+
+<h1><b>total pedido:<c:out value="${total}"/></b></h1> 
+
+
+
+
+
+
+
      
-   <th>id_producto</th>
-   <th>descripcion</th>
-   <th>valor</th>
-  
-   </tr>
-   
-   <c:forEach var="row" items="${result.rows}">
-       
-   <tr>
-   
-   <td><c:out value="${row.id_producto}"/></td>
-   <td><c:out value="${row.descripcion}"/></td>
-   <td><c:out value="${row.valor}"/></td>
-  
-   </tr>
-  
-</c:forEach>
-</table>
-       
-        </form>    
-    </body>
+        
+        
+
+</form>    
+</body>
 </html>

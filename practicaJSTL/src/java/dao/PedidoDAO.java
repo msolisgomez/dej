@@ -7,13 +7,16 @@ package dao;
 
 import bean.Pedido;
 
+import java.util.List;
+
 /**
  *
  * @author michael
  */
 public interface PedidoDAO {
      public Integer pedidoIngresa(Pedido pe);
-     public Integer pedidoBusqueda(Integer rut); 
+     public Integer ultimoPedido(Integer rut); 
+     public List<Pedido> pedidoRut(Integer rut); 
      
     
 }

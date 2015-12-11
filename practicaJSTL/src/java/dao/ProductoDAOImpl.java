@@ -115,35 +115,7 @@ public class ProductoDAOImpl implements ProductoDAO{
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 //    }
 //
-//    @Override
-//    public Integer productoGetPrec(Producto pro) {
-//        List<Producto> datos = new ArrayList<>();
-//       Integer valor = 0;
-//        try {
-//            ps = con.prepareStatement("select precio from producto where id=?");
-//            ps.setInt(1, pro.getId());
-//            rs = ps.executeQuery();
-//            
-//                    
-//            while (rs.next()) {
-//                valor=rs.getInt(1);
-//            }
-//        } catch (SQLException ex) {
-//            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
-//        } finally {
-//            if (con != null) {
-//                Conexion.cerrarCon();
-//            }
-//            try {
-//                if (rs != null) {
-//                    rs.close();
-//                }
-//            } catch (SQLException ex) {
-//                logger.log(Level.SEVERE, null, ex);
-//            }
-//        }
-//        return valor;  
-//    }
+   
 //
 //    @Override
 //    public Integer productoPrecio(Producto pro) {
@@ -181,27 +153,15 @@ public class ProductoDAOImpl implements ProductoDAO{
         return valor;
     }
 
-    @Override
-    public ResultSet getProd() {
-       //ResultSet rs = null;
-       try{
-       String sql="select id_producto, descripcion,valor from producto";
-       ps=con.prepareStatement(sql);
-       rs=ps.executeQuery();
-       
-    }catch (Exception e){
-           System.out.print(e.getMessage());
-        
-    }
-    return null;
-    }
+   
 
     @Override
     public Producto getProductoById(int id_producto) {
        Producto datos = null;
-       
+  
         try {
-            ps = con.prepareStatement("select id_producto, descripcion,valor from producto where id_producto = "+id_producto);
+            ps = con.prepareStatement("select id_producto, descripcion,valor from producto where id_producto =?");
+            ps.setInt(1, id_producto);
             rs = ps.executeQuery();
  
                     
@@ -224,28 +184,36 @@ public class ProductoDAOImpl implements ProductoDAO{
         }
         return datos;  
     }
+     @Override
+    public Integer productoGetPrec(Producto pro) {
+        List<Producto> datos = new ArrayList<>();
+       Integer val = 0;
+        try {
+            ps = con.prepareStatement("select valor from producto where id=?");
+            ps.setInt(1, pro.getId_producto());
+            rs = ps.executeQuery();
+            
+                    
+            while (rs.next()) {
+                val=rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
+        } finally {
+            if (con != null) {
+                Conexion.cerrarCon();
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        return val;  
+    }
     
         
     }
 
-// <select name="seleccion">
-//             <option>Seleccionar productos</option>
-//             <% 
-//             ResultSet rs = ProductoDAOImpl.getPdao().getProd();
-//             while(rs.next()){
-//             %>
-//             
-//             <option><%= rs.getString("descripcion") %></option> <input type="submit" value="agregar" name="agregar" />
-//             <% }
-//             %>
-//         </select> <br/><br/><br/><br/>
-//    
-
-// <select name="seleccion">
-//             <option>Seleccionar productos</option>
-//             
-//            
-//
-//             <option> producto 1</option> <input type="submit" value="agregar" name="agregar" />
-//            
-//         </select> <br/><br/><br/><br/>

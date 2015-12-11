@@ -4,7 +4,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%ResultSet resultset =null;%>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,9 +18,9 @@
               <a href="index.jsp"> home </a> <br/>
         <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
         <center> 
-        Muchas gracias : CLIENTE XXX <br/>
-        Tu numero de pedido es : pedidoXXX <br/>
-        Monto de su pedido : xxx<br/><br/><br/><br/>
+        Muchas gracias : <c:out value="${nombre}"/><br/>
+        Tu numero de pedido es : <c:out value="${ticket}"/> <br/>
+        Monto de su pedido :<c:out value="${total}"/><br/><br/><br/><br/>
         
         
         

@@ -6,10 +6,13 @@
 package dao;
 
 import bean.Pedido;
+import bean.Producto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,12 +63,15 @@ public class PedidoDAOImpl implements PedidoDAO{
     }
 
     @Override
-    public Integer pedidoBusqueda(Integer rut) {
+    public Integer ultimoPedido(Integer rut) {
         Integer valor = 0;
         try {
-            ps = con.prepareStatement("select ticket,rut,medio_pago,agranda_bebida_papas,para_llevar,total from pedido where rut=?");
+            ps = con.prepareStatement("select max(ticket) from pedido where rut=?");
             ps.setInt(1, rut);
-            valor = ps.executeUpdate();
+            rs = ps.executeQuery();
+             while (rs.next()) {
+                valor=(rs.getInt(1));
+            }
         } catch (SQLException ex) {
             logger.log(Level.CONFIG, "Buscar, sql erronea: {0}", ex.getMessage());
         } finally {
@@ -74,6 +80,39 @@ public class PedidoDAOImpl implements PedidoDAO{
             }
         }
         return valor;
+    }
+
+    @Override
+    public List<Pedido> pedidoRut(Integer rut) {
+       List<Pedido> datos = new ArrayList<>();
+    
+       
+        try {
+            ps = con.prepareStatement("select ticket, rut,medio_pago,agranda_bebida_papas,para_llevar,total"
+                    + " from pedido where rut=?");
+            ps.setInt(1,rut);
+            rs = ps.executeQuery();
+ 
+                    
+            while (rs.next()) {
+                datos.add(new Pedido(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getBoolean(4),rs.getBoolean(5),rs.getInt(6)));
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
+        } finally {
+            if (con != null) {
+                Conexion.cerrarCon();
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        return datos;  
+        
     }
     }
     

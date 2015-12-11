@@ -17,11 +17,11 @@ public interface ProductoDAO {
     public List<Producto> productoTodos(); 
     public Integer productoIngresa(Producto pro);
     public Integer productoElimina(Integer id_producto);
-    public ResultSet getProd();
+    
     public Producto getProductoById(int id_producto);
 //    public Integer productoBaja(Producto pro);
 //    public Boolean productoMayorCero(Integer precio);//no esta en uso
-//    public Integer productoGetPrec(Producto pro);
+    public Integer productoGetPrec(Producto pro);
 //    public Integer productoPrecio(Producto pro);
     
 }

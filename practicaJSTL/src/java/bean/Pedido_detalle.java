@@ -14,7 +14,10 @@ public class Pedido_detalle {
     private Integer ticket;
     private Integer id_producto;
     private Integer cantidad;
-
+    private Producto producto;
+    
+    
+    
     public Pedido_detalle() {
     }
 
@@ -25,6 +28,16 @@ public class Pedido_detalle {
         this.cantidad = cantidad;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
+    }
+
+    
+    
     public Integer getId_pedido_detalle() {
         return id_pedido_detalle;
     }
@@ -55,6 +68,14 @@ public class Pedido_detalle {
 
     public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
+    }
+    
+    public void sumarProducto(){
+    this.cantidad ++;
+    }
+    
+    public Integer getTotal(){
+    return cantidad*producto.getValor();
     }
     
     

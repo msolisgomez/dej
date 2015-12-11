@@ -1,5 +1,7 @@
 
 
+<%@page import="bean.Pedido"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
@@ -16,7 +18,7 @@
              Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato
         <table border="4">
             <tr>
-              <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="Buscar" name="buscar" /> </td> <br/><br/>
+              <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="buscar" name="pressedButton" /> </td> <br/><br/>
            </tr>
         </table>
               <a href="index.jsp"> home </a> <br/>
@@ -47,6 +49,21 @@
    </tr>
 </c:forEach>
 </table>
+        
+        <%
+            List<Pedido> datos = (List<Pedido>)
+                    request.getAttribute("datos");
+                    pageContext.setAttribute("datos",datos);
+         %>
+         
+  
+ <c:forEach var="obj" items="${datos}">
+     
+
+
+<c:out value="${obj.getTicket()}" /> - <c:out value="${obj.getRut()}" /> - <c:out value="${obj.getMedio_pago()}" />- <c:out value="${obj.getAgranda_bebida_papas()}"/> - <c:out value="${obj.getPara_llevar()}" /> -<c:out value="${obj.getTotal()}" /><br>
+             
+</c:forEach>
         
          </form>
     </body>
