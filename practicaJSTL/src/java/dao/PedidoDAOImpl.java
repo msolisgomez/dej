@@ -7,6 +7,7 @@ package dao;
 
 import bean.Pedido;
 import bean.Producto;
+import static java.lang.System.out;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -107,6 +108,7 @@ public class PedidoDAOImpl implements PedidoDAO{
                 if (rs != null) {
                     rs.close();
                 }
+            
             } catch (SQLException ex) {
                 logger.log(Level.SEVERE, null, ex);
             }

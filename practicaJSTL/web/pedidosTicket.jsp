@@ -13,9 +13,11 @@
     </head>
     <body>
          <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
-             
+              <hr color="blue"/>
+             <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
+              <hr color="blue"/>
       
-              <a href="index.jsp"> home </a> <br/>
+              <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> home </a> <br/>
         <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
         <center> 
         Muchas gracias : <c:out value="${nombre}"/><br/>

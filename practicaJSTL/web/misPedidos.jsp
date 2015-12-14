@@ -15,14 +15,18 @@
     </head>
     <body>
          <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
+             <hr color="blue"/>
+             <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
              Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato
+              <hr color="blue"/>
         <table border="4">
             <tr>
               <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="buscar" name="pressedButton" /> </td> <br/><br/>
            </tr>
         </table>
-              <a href="index.jsp"> home </a> <br/>
+              <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> home </a> <br/>
         <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
+         <hr color="blue"/>
         <sql:setDataSource var="tab" driver="com.mysql.jdbc.Driver"
      url="jdbc:mysql://localhost/et_dej4501"
      user="root"  password="root"/>
@@ -54,17 +58,34 @@
             List<Pedido> datos = (List<Pedido>)
                     request.getAttribute("datos");
                     pageContext.setAttribute("datos",datos);
+                   
          %>
          
   
  <c:forEach var="obj" items="${datos}">
      
 
-
-<c:out value="${obj.getTicket()}" /> - <c:out value="${obj.getRut()}" /> - <c:out value="${obj.getMedio_pago()}" />- <c:out value="${obj.getAgranda_bebida_papas()}"/> - <c:out value="${obj.getPara_llevar()}" /> -<c:out value="${obj.getTotal()}" /><br>
-             
+     <table border="2">
+         <tr><td><b>Ticket:</b><c:out value="${obj.getTicket()}" /></td>  <td><b>Rut:</b><c:out value="${obj.getRut()}" /></td><td><b>Medio de pago:</b><c:out value="${obj.getMedio_pago()}" /></td><td><b>Agranda beb y papas: </b><c:out value="${obj.getAgranda_bebida_papas()}"/></td> <td><b>Para llevar:</b><c:out value="${obj.getPara_llevar()}" /></td> -<td><b>Total:</b><c:out value="${obj.getTotal()}" /></td></tr></br>
+             </table>
 </c:forEach>
-        
+          <hr color="blue"/>
+                <input type="submit" value="hacer pedido" name="pressedButton" /> 
          </form>
+          <%
+            Object valor= request.getAttribute("valor");
+            if(valor!=null){
+            String cant= String.valueOf(valor);
+            String OK="ENCONTRADO";
+            String NOK="NO ENCONTRADO";
+            pageContext.setAttribute("cant",cant);
+            pageContext.setAttribute("OK",OK);
+            pageContext.setAttribute("NOK",NOK);
+            }
+            %>
+            <c:set var="cant" value="${cant}" />
+            <c:if test="${cant>='1'}"><c:out value="${OK}" /></c:if>
+            <c:if test="${cant=='0'}"><c:out value="${NOK}" /></c:if>
+                       
     </body>
 </html>

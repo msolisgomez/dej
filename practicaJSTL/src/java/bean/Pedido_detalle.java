@@ -74,6 +74,9 @@ public class Pedido_detalle {
     this.cantidad ++;
     }
     
+     public void restarProducto(){
+    this.cantidad --;
+    }
     public Integer getTotal(){
     return cantidad*producto.getValor();
     }

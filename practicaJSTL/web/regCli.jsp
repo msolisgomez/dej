@@ -13,14 +13,17 @@
     </head>
     <body>
              <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
+                 <hr color="blue"/>
+             <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
+              <hr color="blue"/>
            
-            
-             <h5>Bienvenido,Ingrese sus datos:</h5>
+                   <h5>Bienvenido,Ingrese sus datos:</h5>
                 Rut :<input type="text" name="rut" value="" /></br>
-                Nombre :<input type="text" name="nombre" value="" />
+                Nombre :<input type="text" name="nombre" value="" /></br></br>
         
-         <input type="hidden" name="seleccion" value="2" />
-        <input type="submit" value="Almacenar" />
+        <input type="submit" value="almacenar" name="pressedButton" />
+        <hr color="blue"/>
+        
         
         <sql:setDataSource var="tab" driver="com.mysql.jdbc.Driver"
      url="jdbc:mysql://localhost/et_dej4501"
@@ -56,8 +59,6 @@
             <c:if test="${cant>='1'}"><c:out value="${OK}" /></c:if>
             <c:if test="${cant=='0'}"><c:out value="${NOK}" /></c:if>
             
-               
-      
-        
+          
     </body>
 </html>

@@ -18,7 +18,6 @@ import dao.PedidoDetalleDAOImpl;
 import dao.ProductoDAO;
 import dao.ProductoDAOImpl;
 import java.io.IOException;
-import java.io.PrintWriter;
 import static java.lang.System.out;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +66,7 @@ public class Controlador extends HttpServlet {
            HttpSession session = request.getSession();
            String nombre=request.getParameter("nombre");
            String rut=request.getParameter("rut");
+           
             List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
             Integer ultTickIngres=0;
             ultTickIngres=pedao.ultimoPedido(Integer.parseInt(rut));
@@ -100,20 +100,28 @@ public class Controlador extends HttpServlet {
             Integer rut = Integer.parseInt(request.getParameter("rut"));
             List<Pedido> datos = pedao.pedidoRut(rut);
             request.setAttribute("datos", datos);
+            if(!datos.isEmpty()){
+            request.getRequestDispatcher("misPedidos.jsp").forward(request, response);
+            }
+            else{
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+        } else if (seleccion.equals("buscar otro rut")) {
             request.getRequestDispatcher("misPedidos.jsp").forward(request, response);
 
-        } else if (seleccion.equals("5")) {
-            List<Cliente> datos = cdao.clienteTodos();
-            request.setAttribute("datos", datos);
-            request.getRequestDispatcher("pagina5.jsp").forward(request, response);
+        } else if (seleccion.equals("almacenar")) {
+            Integer rut = Integer.parseInt(request.getParameter("rut"));
+            String nombre=request.getParameter("nombre");
+            Integer valor = cdao.clienteIngresa(new Cliente(rut,nombre));
+         request.setAttribute("valor", valor);
+         request.getRequestDispatcher("regCli.jsp").forward(request,response);
 
-        } else if (seleccion.equals("6")) {
-            response.sendRedirect("pagina6.jsp");
-
-        } else if (seleccion.equals("8")) {
-            List<Producto> datos = pdao.productoTodos();
-            request.setAttribute("datos", datos);
-            request.getRequestDispatcher("pagina2.jsp").forward(request, response);
+        } else if (seleccion.equals("eliminar producto")) {
+            elimProd(request);
+            HttpSession session = request.getSession();
+            List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
+            request.setAttribute("total", getTotalPedido(sessionPedidoDet));
+            request.getRequestDispatcher("Controlador?pressedButton=iniciarPagina").forward(request, response);
 
         } else if (seleccion.equals("9")) {
             response.sendRedirect("pagina4.jsp");
@@ -203,7 +211,32 @@ public class Controlador extends HttpServlet {
         return sessionPedidoDet;
 
     }
+//ultcreado**************************************************+
+     private List<Pedido_detalle> elimProd(HttpServletRequest request) {
+        Integer id_producto = Integer.parseInt(request.getParameter("id_producto"));
+        HttpSession session = request.getSession();
+        List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
+        if (sessionPedidoDet == null) {
+            sessionPedidoDet = new ArrayList<Pedido_detalle>();
 
+        }
+        for (Pedido_detalle pde : sessionPedidoDet) {
+            if (id_producto == pde.getProducto().getId_producto()) {
+                pde.restarProducto();
+                session.setAttribute("sessionPedidoDet", sessionPedidoDet);
+                return sessionPedidoDet;
+            }
+        }
+        ProductoDAO pdao = new ProductoDAOImpl();
+        Producto prod = pdao.getProductoById(id_producto);
+        Pedido_detalle pde = new Pedido_detalle();
+        pde.setCantidad(1);
+        pde.setProducto(prod);
+        sessionPedidoDet.remove(pde);
+        session.setAttribute("sessionPedidoDet", sessionPedidoDet);
+        return sessionPedidoDet;
+
+    }
     private Boolean grabarPedido(HttpServletRequest request) {
         HttpSession session = request.getSession();
         List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
