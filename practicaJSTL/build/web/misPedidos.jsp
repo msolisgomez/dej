@@ -21,7 +21,7 @@
               <hr color="blue"/>
         <table border="4">
             <tr>
-              <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="buscar" name="pressedButton" /> </td> <br/><br/>
+              <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="BUSCAR" name="pressedButton" /> </td> <br/><br/>
            </tr>
         </table>
               <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> home </a> <br/>
@@ -70,7 +70,7 @@
              </table>
 </c:forEach>
           <hr color="blue"/>
-                <input type="submit" value="hacer pedido" name="pressedButton" /> 
+                <input type="submit" value="HACER PEDIDO" name="pressedButton" /> 
          </form>
           <%
             Object valor= request.getAttribute("valor");

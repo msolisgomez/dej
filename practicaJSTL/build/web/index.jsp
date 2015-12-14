@@ -60,7 +60,7 @@ return false;
                 </c:forEach>
             </select>
 
-            <input type="submit" value="agregar" name="pressedButton" />
+            <input type="submit" value="AGREGAR" name="pressedButton" />
        
     <hr color="blue"/>
 

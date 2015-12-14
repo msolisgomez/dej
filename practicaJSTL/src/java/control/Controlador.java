@@ -52,7 +52,7 @@ public class Controlador extends HttpServlet {
             request.setAttribute("productos", productos);
             request.getRequestDispatcher("index.jsp").forward(request, response);
             //response.sendRedirect("index.jsp").f;        
-        } else if (seleccion.equals("agregar")) {
+        } else if (seleccion.equals("AGREGAR")) {
 
             agregarProd(request);
             HttpSession session = request.getSession();
@@ -95,7 +95,7 @@ public class Controlador extends HttpServlet {
 
             Cliente cliente = grabarCliente(request);
 
-        } else if (seleccion.equals("buscar")) {
+        } else if (seleccion.equals("BUSCAR")) {
 
             Integer rut = Integer.parseInt(request.getParameter("rut"));
             List<Pedido> datos = pedao.pedidoRut(rut);
@@ -106,9 +106,9 @@ public class Controlador extends HttpServlet {
             else{
             request.getRequestDispatcher("error.jsp").forward(request, response);
             }
-        } else if (seleccion.equals("buscar otro rut")) {
+        } else if (seleccion.equals("BUSCAR OTRO RUT")) {
             request.getRequestDispatcher("misPedidos.jsp").forward(request, response);
-
+            //AQUI DEBERIA IR CODIGO PARA VOLVER A PEDIR EL PEDIDO ANTIGUO SEGUN EL RUT BUSCADO
         } else if (seleccion.equals("almacenar")) {
             Integer rut = Integer.parseInt(request.getParameter("rut"));
             String nombre=request.getParameter("nombre");
@@ -211,7 +211,7 @@ public class Controlador extends HttpServlet {
         return sessionPedidoDet;
 
     }
-//ultcreado**************************************************+
+//ultcreado**************************************************
      private List<Pedido_detalle> elimProd(HttpServletRequest request) {
         Integer id_producto = Integer.parseInt(request.getParameter("id_producto"));
         HttpSession session = request.getSession();
