@@ -4,6 +4,7 @@
 <%@ page import="java.sql.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
@@ -17,16 +18,14 @@
              <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
               <hr color="blue"/>
       
-              <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> home </a> <br/>
-        <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
+              <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> HOME </a> <br/>
+        <a href="misPedidos.jsp"> MIS PEDIDOS </a> <br/><br/><br/>
         <center> 
-        Muchas gracias : <c:out value="${nombre}"/><br/>
-        Tu numero de pedido es : <c:out value="${ticket}"/> <br/>
-        Monto de su pedido :<c:out value="${total}"/><br/><br/><br/><br/>
-        
-        
-        
-            por favor pase por caja para que espere su pedido
+        Muchas gracias :  <b><c:out value="${nombre}"/> </b><br/>
+        Tu numero de pedido es :  <b><fmt:formatNumber value="${ticket}"pattern="0000"/></b> <br/> 
+        Monto de su pedido :  <b><c:out value="${total}"/></b><br/><br/><br/><br/>
+                        
+        <b>Por favor pase por caja para que espere su pedido</b>
         </center>
          </form>
     </body>

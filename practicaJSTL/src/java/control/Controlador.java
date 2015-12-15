@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package control;
 
 import bean.Cliente;
@@ -21,7 +17,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.System.out;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -57,7 +55,7 @@ public class Controlador extends HttpServlet {
             request.setAttribute("productos", productos);
             request.getRequestDispatcher("index.jsp").forward(request, response);
 
-        } else if (seleccion.equals("agregar")) {
+        } else if (seleccion.equals("AGREGAR")) {
 
             agregarProd(request,null);
             HttpSession session = request.getSession();
@@ -80,7 +78,8 @@ public class Controlador extends HttpServlet {
                 session.removeAttribute("sessionPedidoDet");
                 request.getRequestDispatcher("pedidosTicket.jsp").forward(request, response);
 
-            } else {
+            } 
+            else {
                 request.getRequestDispatcher("pagina2.jsp").forward(request, response);
             }
 
@@ -89,7 +88,13 @@ public class Controlador extends HttpServlet {
             Integer rut = Integer.parseInt(request.getParameter("rut"));
             List<Pedido> pedidos = pedao.pedidoRut(rut);
             request.setAttribute("pedidos", pedidos);
+             if(!pedidos.isEmpty()){
             request.getRequestDispatcher("misPedidos.jsp").forward(request, response);
+            }
+            else{
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            }
+            
 
         } else if (seleccion.equals("repetirPedido")) {
             Integer ticket = Integer.parseInt(request.getParameter("ticket"));
@@ -105,6 +110,12 @@ public class Controlador extends HttpServlet {
             }
             request.setAttribute("rut", cli.getRut());
             request.setAttribute("nombre", cli.getNombre());
+            HttpSession session = request.getSession();
+            List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
+            request.setAttribute("total", getTotalPedido(sessionPedidoDet));
+            request.getRequestDispatcher("Controlador?pressedButton=iniciarPagina").forward(request, response);
+        }else if(seleccion.equals("ELIMINAR PRODUCTO")) {
+            elimProd(request);
             HttpSession session = request.getSession();
             List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
             request.setAttribute("total", getTotalPedido(sessionPedidoDet));
@@ -129,7 +140,19 @@ public class Controlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//         Map<String, String> messages = new HashMap<String, String>();
+//    request.setAttribute("messages", messages);
         processRequest(request, response);
+      
+//            String rut = (request.getParameter("rut"));
+//            String nombre = (request.getParameter("nombre"));
+//            if (rut == null || rut.trim().isEmpty()) {
+//        messages.put("rut", "NO PUEDE ESTAR VACIO");
+//    }
+//    if (nombre == null || nombre.trim().isEmpty()) {
+//        messages.put("nombre", "NO PUEDE ESTAR VACIO");
+//    }
+//    request.getRequestDispatcher("Controlador?pressedButton=iniciarPagina").forward(request, response);
     }
 
     /**
@@ -143,8 +166,12 @@ public class Controlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+          processRequest(request, response);
+            
     }
+
+   
+    
 
     /**
      * Returns a short description of the servlet.
@@ -182,6 +209,32 @@ public class Controlador extends HttpServlet {
         sessionPedidoDet.add(pde);
         session.setAttribute("sessionPedidoDet", sessionPedidoDet);
         return sessionPedidoDet;
+    }
+    
+    private List<Pedido_detalle> elimProd(HttpServletRequest request) {
+        Integer id_producto = Integer.parseInt(request.getParameter("id_producto"));
+        HttpSession session = request.getSession();
+        List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
+        if (sessionPedidoDet == null) {
+            sessionPedidoDet = new ArrayList<Pedido_detalle>();
+
+        }
+        for (Pedido_detalle pde : sessionPedidoDet) {
+            if (id_producto == pde.getProducto().getId_producto()) {
+                pde.restarProducto();
+                session.setAttribute("sessionPedidoDet", sessionPedidoDet);
+                return sessionPedidoDet;
+            }
+        }
+        ProductoDAO pdao = new ProductoDAOImpl();
+        Producto prod = pdao.getProductoById(id_producto);
+        Pedido_detalle pde = new Pedido_detalle();
+        pde.setCantidad(1);
+        pde.setProducto(prod);
+        sessionPedidoDet.remove(pde);
+        session.setAttribute("sessionPedidoDet", sessionPedidoDet);
+        return sessionPedidoDet;
+
     }
 
     private Boolean grabarPedido(HttpServletRequest request) {

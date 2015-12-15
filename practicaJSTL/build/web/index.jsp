@@ -1,11 +1,12 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
 <%@page import="dao.ProductoDAOImpl"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
 
 <!DOCTYPE html>
 <html xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core">
@@ -16,38 +17,36 @@
         <title>John master Home</title>
  
     </head>
-   <script type="text/javascript">
-function validar(form1){
-if(document.form1.rut.value=="" ){
-alert("Llene el campo factura.";
-document.form1.rut.focus();
-return false;
-}else if(document.form1.nombre.value=="" ){
-alert("Llene el campo nombre de la empresa.";
-document.form1.nombre.focus();
-return false;
-</script>
+
     <hr color="blue"/>
     <body>
         <p align="right"><a href="index.jsp" > Ayuda </a></p>
-        <form action="http://localhost:8080/practicaJSTL/Controlador" name="form1" id="form1" method="get"onsubmit="return validar()">
+        <form action="http://localhost:8080/practicaJSTL/Controlador" name="form1" id="form1" method="get">
 
             <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
 
             <center>    
-                Bienvenido a john master indiquenos su rut y nombre para generar su pedido <br/><br/>
+                <b>Bienvenido a JOHN MASTER indiquenos su Nombre y Rut para generar su pedido</b> <br/><br/>
             </center>
             <hr color="blue"/>
-            <a href="index.jsp"> home </a> <br/>
-            <a href="regCli.jsp"> Registro de cliente </a> <br/>
-            <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
+            <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> HOME </a> <br/>
+            <a href="regCli.jsp"> REGISTRO DE CLIENTE </a> <br/>
+            <a href="misPedidos.jsp"> MIS PEDIDOS </a> <br/><br/><br/>
             <center>
-                <table border="4">
+   <table border="4">
                     <tr>
                         <td style="text-align:right">Nombre: <input type="text" name="nombre" value="<c:out value="${nombre}"/>"  /></td> <br/>
-                    <td style="text-align:right">Rut:  <input type="text" name="rut"  value= "<c:out value="${rut}"/>"/></td> <br/>
-                    </tr>
+                        <td style="text-align:right">Rut:  <input type="text" name="rut"  value= "<c:out value="${rut}"/>"/></td> <br/>
+                         
+                        <span class="error">${messages.rut}</span><br>  
+                        <c:if test ="${nombre.trim().isEmpty()||rut.trim().isEmpty() }">
+                               <td colspan="2"><font color="red">
+                                <c:out value="COMPLETA LOS DATOS:RUT Y NOMBRE"/>
+                            </font></td>
+                          </c:if>
+                         </tr>
                 </table>
+                
                 <hr color="blue"/>
             </center>
             <center>
@@ -97,8 +96,8 @@ return false;
        </table>
         <p align="center">Ingrese el <b>ID producto</b> si desea eliminarlo de su pedido:</p>
         <p align="center"><input type="text" name="id_producto" value="" /></p>
-        <p align="center"><input type="submit" align="right" value="eliminar producto" name="pressedButton" /></p> 
-        <p align="center"><input type="submit" name="pressedButton"  onsubmit="validar()" value="ENVIAR PEDIDO" /></p>
+        <p align="center"><input type="submit" name="pressedButton" align="right" value="ELIMINAR PRODUCTO"  /></p> 
+        <p align="center"><input type="submit" name="pressedButton" value="ENVIAR PEDIDO" /></p>
 <h1><b>total pedido:<c:out value="${total}"/></b></h1> 
 </form>
  <%

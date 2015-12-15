@@ -13,14 +13,17 @@
     </head>
     <body>
         <form action="http://localhost:8080/practicaJSTL/Controlador" method="get">
-            Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato
+            <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
+             <hr color="blue"/>
+            <b>Busca tus ultimos pedidos y vuelve a solicitarlos de inmediato</b>
+             <hr color="blue"/>
             <table border="4">
                 <tr>
                     <td style="text-align:right">Rut:<input type="text" name="rut"  value="" /><input type="submit" value="Buscar Pedidos" name="pressedButton" /> </td> <br/><br/>
                 </tr>
             </table>
-            <a href="index.jsp"> home </a> <br/>
-            <a href="misPedidos.jsp"> mis pedidos </a> <br/><br/><br/>
+            <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> HOME </a> <br/>
+            <a href="misPedidos.jsp"> MIS PEDIDOS </a> <br/><br/><br/>
 
             <table border="1" width="40%">
                 <tr>

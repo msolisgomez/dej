@@ -16,6 +16,8 @@
                  <hr color="blue"/>
              <img src="good-food.jpg" width="300" height="300" alt="good-food"/>
               <hr color="blue"/>
+                    <a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=iniciarPagina"> HOME </a> <br/>
+                    <a href="misPedidos.jsp"> MIS PEDIDOS </a> <br/><br/><br/>
            
                    <h5>Bienvenido,Ingrese sus datos:</h5>
                 Rut :<input type="text" name="rut" value="" /></br>
