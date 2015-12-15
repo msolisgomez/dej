@@ -51,7 +51,7 @@ public class ClienteDAOImpl implements ClienteDAO{
         }
         return valor;
     }
-
+    
     @Override
     public List<Cliente> clienteTodos() {
         List<Cliente> datos = new ArrayList<>();
@@ -78,6 +78,35 @@ public class ClienteDAOImpl implements ClienteDAO{
             }
         }
         return datos;  
+        
+}
+    @Override
+    public Cliente clienteBuscar(Integer rut) {
+        Cliente cliente = null;
+        try {
+            ps = con.prepareStatement("select rut, nombre from cliente where rut =?");
+            ps.setInt(1,rut);
+            rs = ps.executeQuery();
+ 
+                    
+            while (rs.next()) {
+                cliente=new Cliente(rs.getInt(1), rs.getString(2).toLowerCase());
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
+        } finally {
+            if (con != null) {
+                Conexion.cerrarCon();
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        return cliente;  
         
 }
 

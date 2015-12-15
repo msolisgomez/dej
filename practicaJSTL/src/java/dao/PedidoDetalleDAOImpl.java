@@ -104,6 +104,36 @@ public class PedidoDetalleDAOImpl implements PedidoDetalleDAO{
         return datos;  
         
     }
+    @Override
+    public List<Pedido_detalle> pedidoDetalleTicket(Integer ticket) {
+       List<Pedido_detalle> datos = new ArrayList<>();
+       
+        try {
+            ps = con.prepareStatement("select id_pedido_detalle, ticket,id_producto,cantidad from pedido_detalle where ticket=?");
+            ps.setInt(1, ticket);
+            rs = ps.executeQuery();
+ 
+                    
+            while (rs.next()) {
+                datos.add(new Pedido_detalle(rs.getInt(1), rs.getInt(2), rs.getInt(3),rs.getInt(4)));
+            }
+        } catch (SQLException ex) {
+            logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());
+        } finally {
+            if (con != null) {
+                Conexion.cerrarCon();
+            }
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException ex) {
+                logger.log(Level.SEVERE, null, ex);
+            }
+        }
+        return datos;  
+        
+    }
     
     
 

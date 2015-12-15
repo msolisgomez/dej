@@ -96,7 +96,8 @@ public class PedidoDAOImpl implements PedidoDAO{
  
                     
             while (rs.next()) {
-                datos.add(new Pedido(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getBoolean(4),rs.getBoolean(5),rs.getInt(6)));
+                Pedido pedido = new Pedido(rs.getInt(1),rs.getInt(2), rs.getString(3), rs.getBoolean(4),rs.getBoolean(5),rs.getInt(6));
+                datos.add(pedido);
             }
         } catch (SQLException ex) {
             logger.log(Level.CONFIG, "Select, sql erronea: {0}", ex.getMessage());

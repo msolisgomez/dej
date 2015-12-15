@@ -17,6 +17,7 @@ public interface ClienteDAO {
     public List<Cliente> clienteTodos(); 
     public Boolean clienteExiste(Integer id);
     public Integer clienteElimina(Integer id);
+    public Cliente clienteBuscar(Integer rut);
     
     
     

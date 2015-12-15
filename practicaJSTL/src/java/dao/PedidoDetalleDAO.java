@@ -16,5 +16,6 @@ import java.util.List;
 public interface PedidoDetalleDAO {
      public Integer pedidoDetIngresa(Pedido_detalle pd);
      public Integer pedidoDetBusqueda(Integer rut); 
-     public List<Pedido_detalle> pedidoDetalleTodos(); 
+     public List<Pedido_detalle> pedidoDetalleTodos();
+     public List<Pedido_detalle> pedidoDetalleTicket(Integer ticket);
 }
