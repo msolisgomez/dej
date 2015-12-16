@@ -35,15 +35,11 @@
             <center>
    <table border="4">
                     <tr>
-                        <td style="text-align:right">Nombre: <input type="text" name="nombre" value="<c:out value="${nombre}"/>"  /></td> <br/>
-                        <td style="text-align:right">Rut:  <input type="text" name="rut"  value= "<c:out value="${rut}"/>"/></td> <br/>
+                        <td style="text-align:right">Nombre: <input type="text" name="nombre" value="<c:out value="${nombre}"/>" required /></td> <br/>
+                        <td style="text-align:right">Rut:  <input type="text" name="rut"  value= "<c:out value="${rut}"/>" required /></td> <br/>
                          
                         <span class="error">${messages.rut}</span><br>  
-                        <c:if test ="${nombre.trim().isEmpty()||rut.trim().isEmpty() }">
-                               <td colspan="2"><font color="red">
-                                <c:out value="COMPLETA LOS DATOS:RUT Y NOMBRE"/>
-                            </font></td>
-                          </c:if>
+                        
                          </tr>
                 </table>
                 
@@ -59,7 +55,7 @@
                 </c:forEach>
             </select>
 
-            <input type="submit" value="AGREGAR" name="pressedButton" />
+            <input type="submit" value="AGREGAR" name="pressedButton" formnovalidate="formnovalidate" />
        
     <hr color="blue"/>
 
@@ -81,6 +77,7 @@
             <th>Cantidad</th>
             <th>Descripcion</th>
             <th>Total</th>
+            <th>Eliminar</th>
         </tr>
         <c:out value="${sessionScope.Questions.questionPaperID}" />
         <c:forEach var="det" items="${sessionScope.sessionPedidoDet}">
@@ -89,14 +86,12 @@
                 <td><c:out value="${det.producto.id_producto}"/></td>
                 <td><c:out value="${det.cantidad}"/></td>
                 <td><c:out value="${det.producto.descripcion}"/></td>
-                <td><c:out value="${det.total}"/></td>  
+                <td><c:out value="${det.total}"/></td>
+                <td><a href="http://localhost:8080/practicaJSTL/Controlador?pressedButton=ELIMINARPRODUCTO&id_producto=<c:out value='${det.producto.id_producto}'/>" >X</a></td>
            </tr>
                                  
         </c:forEach>
        </table>
-        <p align="center">Ingrese el <b>ID producto</b> si desea eliminarlo de su pedido:</p>
-        <p align="center"><input type="text" name="id_producto" value="" /></p>
-        <p align="center"><input type="submit" name="pressedButton" align="right" value="ELIMINAR PRODUCTO"  /></p> 
         <p align="center"><input type="submit" name="pressedButton" value="ENVIAR PEDIDO" /></p>
 <h1><b>total pedido:<c:out value="${total}"/></b></h1> 
 </form>

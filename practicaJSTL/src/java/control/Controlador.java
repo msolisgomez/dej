@@ -114,7 +114,7 @@ public class Controlador extends HttpServlet {
             List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
             request.setAttribute("total", getTotalPedido(sessionPedidoDet));
             request.getRequestDispatcher("Controlador?pressedButton=iniciarPagina").forward(request, response);
-        }else if(seleccion.equals("ELIMINAR PRODUCTO")) {
+        }else if(seleccion.equals("ELIMINARPRODUCTO")) {
             elimProd(request);
             HttpSession session = request.getSession();
             List<Pedido_detalle> sessionPedidoDet = (List<Pedido_detalle>) session.getAttribute("sessionPedidoDet");
@@ -220,18 +220,12 @@ public class Controlador extends HttpServlet {
 
         }
         for (Pedido_detalle pde : sessionPedidoDet) {
-            if (id_producto == pde.getProducto().getId_producto()) {
-                pde.restarProducto();
+            if (id_producto.intValue()==pde.getProducto().getId_producto().intValue()) {
+                sessionPedidoDet.remove(pde);
                 session.setAttribute("sessionPedidoDet", sessionPedidoDet);
                 return sessionPedidoDet;
             }
         }
-        ProductoDAO pdao = new ProductoDAOImpl();
-        Producto prod = pdao.getProductoById(id_producto);
-        Pedido_detalle pde = new Pedido_detalle();
-        pde.setCantidad(1);
-        pde.setProducto(prod);
-        sessionPedidoDet.remove(pde);
         session.setAttribute("sessionPedidoDet", sessionPedidoDet);
         return sessionPedidoDet;
 
